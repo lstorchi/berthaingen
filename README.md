@@ -1,0 +1,2 @@
+# berthaingen
+Bertha input generator 
