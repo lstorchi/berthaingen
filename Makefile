@@ -11,7 +11,8 @@ include ./config.mk
 
 PROG_NAME = berthaingen
 
-OBJ = main.o 
+OBJ = main.o \
+      molecule.o
 
 CFLAGS+= $(BASINC) 
 LIB+= 
@@ -23,3 +24,7 @@ $(PROG_NAME): $(OBJ)
 
 clean:
 	rm -rf $(OBJ) $(PROG_NAME)
+
+
+main.o: molecule.hpp
+molecule.o: molecule.hpp

@@ -5,6 +5,8 @@
 
 #include <getopt.h>
 
+#include "molecule.hpp"
+
 namespace 
 {
    void tokenize (const std::string & str, std::vector<std::string> & tokens,
