@@ -144,9 +144,36 @@ namespace berthaingen
 
        molecule & operator= (const molecule &); 
 
-       bool read_file (const char *);
+       const std::vector<atom> & get_atomlist () const
+       {
+         return atoms_;
+       };
 
-       std::vector<atom> get_atomlist () const;
-       std::vector<bond> get_bondlist () const;
+       unsigned int get_atomsize () const
+       {
+         return atoms_.size();
+       };
+
+       const std::vector<bond> & get_bondlist () const
+       {
+         return bonds_;
+       };
+
+       unsigned int get_bondsize () const
+       {
+         return bonds_.size();
+       };
+
+       void add_atom (const atom & a)
+       {
+         atoms_.push_back(a);
+       }
+
+       void add_bond (const bond & b)
+       {
+         bonds_.push_back(b);
+       }
+
+       bool read_xyz_file (const char *);
    };
 }

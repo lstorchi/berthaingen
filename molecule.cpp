@@ -1,6 +1,15 @@
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 #include "molecule.hpp"
 
 using namespace berthaingen;
+
+namespace 
+{
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 //   atom public
@@ -57,7 +66,6 @@ molecule::molecule(const molecule & molec)
 
 molecule & molecule::operator= (const molecule & molec) 
 {
-
   if (this != &molec) 
   {
     reset_();
@@ -65,6 +73,20 @@ molecule & molecule::operator= (const molecule & molec)
   }
 
   return *this;
+}
+
+bool molecule::read_xyz_file (const char * filename)
+{
+  std::ifstream infile(filename);
+
+  unsigned int num_of_atom;
+  std::string molname, buf;
+
+  infile >> buf;
+  
+  std::cout << buf;
+
+  infile >> molname;
 }
 
 /////////////////////////////////////////////////////////////////////////////////

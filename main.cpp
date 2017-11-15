@@ -83,5 +83,11 @@ int main (int argc, char ** argv)
   if (optind >= argc) 
     usages (argv[0]);
 
+  std::string filename = argv[optind];
+
+  berthaingen::molecule mol;
+
+  mol.read_xyz_file(filename.c_str());
+
   return 0;
 }
