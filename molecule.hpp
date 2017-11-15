@@ -1,11 +1,10 @@
 #include <string>
 #include <vector>
 
-namespace  berthaingen
+namespace berthaingen
 {
    class atom
    {
-   
      private:
    
        float x_, y_, z_;
@@ -23,6 +22,8 @@ namespace  berthaingen
        {
          reset_ ();
        };
+
+       atom(float, float, float, const char *);
        
        ~atom()
        {
@@ -69,30 +70,83 @@ namespace  berthaingen
          return symbol_;
        };
    };
+
+   class bond
+   {
+     public:
+       enum bond_type {
+         NOBOND,
+         SINGLE,
+         DOUBLE,
+         TRIPLE
+       };
+
+     private:
+       bond_type type_;
+       int aidx1_, aidx2_;
+
+       void reset_ ()
+       {
+         aidx1_ = -1;
+         aidx2_ = -1;
+         type_ = bond_type::NOBOND;
+       }
    
+     public:
+   
+       bond()
+       {
+         reset_ ();
+       };
+       
+       ~bond()
+       {
+         reset_ ();
+       };
+   
+       void set_type(int);
+
+       void set_type(bond_type in)
+       {
+         type_ = in;
+       };
+   };
    
    class molecule 
    {
      private:
        std::string name_;
        std::vector<atom> atoms_;
-   
+       std::vector<bond> bonds_;
+ 
        void reset_()
        {
          name_ = "";
          atoms_.clear();
+         bonds_.clear();
        };
+
+        void copy_ (const molecule &);
    
      public:
    
-       molecule()
+       molecule() 
        {
          reset_ ();
        };
+
+       molecule(const molecule &);
        
        ~molecule()
        {
          reset_ ();
        };
+
+       molecule & operator= (const molecule &); 
+
+       bool read_file (const char *);
+
+       std::vector<atom> get_atomlist () const;
+       std::vector<bond> get_bondlist () const;
    };
 }
