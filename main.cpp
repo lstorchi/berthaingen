@@ -6,28 +6,7 @@
 #include <getopt.h>
 
 #include "molecule.hpp"
-
-namespace 
-{
-   void tokenize (const std::string & str, std::vector<std::string> & tokens,
-       const std::string & delimiters = " ")
-   {
-     // Skip delimiters at beginning.
-     std::string::size_type lastPos = 
-       str.find_first_not_of(delimiters, 0);
-     std::string::size_type pos = 
-       str.find_first_of(delimiters, lastPos);
-     
-     while (std::string::npos != pos || 
-         std::string::npos != lastPos)
-     {
-       tokens.push_back(str.substr(lastPos, pos - lastPos));
-       lastPos = str.find_first_not_of(delimiters, pos);
-       pos = str.find_first_of(delimiters, lastPos);
-     }
-   }
-}
-
+#include "utility.hpp"
 
 void usages (char * name) 
 {
@@ -68,11 +47,11 @@ int main (int argc, char ** argv)
         break;
       case 'b':
         inputs.assign(optarg);
-        tokenize (inputs, basisset_fname, ";");
+        berthaingen::tokenize (inputs, basisset_fname, ";");
         break;
       case 'f':
         inputs.assign(optarg);
-        tokenize (inputs, fitset_fname, ";");
+        berthaingen::tokenize (inputs, fitset_fname, ";");
         break;
       default:
 	usages (argv[0]);

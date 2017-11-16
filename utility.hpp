@@ -1,5 +1,12 @@
+#include <string>
+#include <vector>
+
 namespace berthaingen
 {
-  bool is_integer(const std::string & s);
-  bool is_float (const std::string & s);
-};
+  void tokenize (const std::string &, std::vector<std::string> &,
+      const std::string & delimiters = " ");
+  
+  bool is_float (const std::string &);
+  
+  bool isInteger(const std::string &);
+}
