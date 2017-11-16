@@ -9,4 +9,6 @@ namespace berthaingen
   bool is_float (const std::string &);
   
   bool is_integer(const std::string &);
+
+  void multispace_to_single (std::string &);
 }

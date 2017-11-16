@@ -20,9 +20,26 @@ atom::atom(float x, float y, float z, const char * s)
   this->set_symbol(s);
 }
 
+std::ostream & operator<< (std::ostream & os, const atom & a)  
+{  
+  os << a.get_symbol() << " " 
+     << a.get_x() << " "
+     << a.get_y() << " "
+     << a.get_z();
+          
+  return os;  
+}  
+
 ///////////////////////////////////////////////////////////////////////////////
 //   bond public
 ///////////////////////////////////////////////////////////////////////////////
+
+bond::bond (int a1, int a2, bond_type t)
+{
+  set_type(t);
+  set_a1(a1);
+  set_a2(a2);
+}
 
 void bond::set_type(int in)
 {
@@ -44,6 +61,32 @@ void bond::set_type(int in)
       type_ = bond_type::NOBOND;
       break;
   }
+}
+
+int bond::get_type() const
+{
+  switch (type_)
+  {
+    case bond_type::NOBOND:
+      return 0;
+    case bond_type::SINGLE:
+      return 1;
+    case bond_type::DOUBLE:
+      return 2;
+    case bond_type::TRIPLE:
+      return 3;
+    default:
+      return 0;
+  }
+}
+
+std::ostream& operator<<(std::ostream & os, const bond & b)
+{
+  os << b.get_a1() << " " 
+     << b.get_a2() << " " 
+     << b.get_type();
+          
+  return os;  
 }
  
 ///////////////////////////////////////////////////////////////////////////////
@@ -78,15 +121,48 @@ bool molecule::read_xyz_file (const char * filename)
   unsigned int num_of_atom;
   std::string molname, buf;
 
-  infile >> buf;
+  getline (infile, buf);
  
   if (! is_integer (buf))
     return false;
 
-  std::cout << buf;
+  getline (infile, molname);
 
-  infile >> molname;
+  int dim = std::stoi (buf);
+
+  for (int i = 0; i<dim; ++i)
+  {
+    std::vector<std::string> tokens;
+
+    getline (infile, buf);
+
+    multispace_to_single(buf);
+
+    berthaingen::tokenize (buf, tokens, " ");
+
+    if (tokens.size() == 4)
+    {
+      if (is_float(tokens[1]) && 
+          is_float(tokens[2]) &&
+          is_float(tokens[3]))
+      {
+        atom a(std::stof(tokens[1]), 
+            std::stof(tokens[2]), 
+            std::stof(tokens[3]),
+            tokens[0].c_str());
+
+        add_atom(a);
+      }
+      else
+        return false;
+    }
+    else
+      return false;
+  }
+
 }
+
+
 
 /////////////////////////////////////////////////////////////////////////////////
 //   molecule private

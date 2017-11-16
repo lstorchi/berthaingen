@@ -16,7 +16,7 @@ OBJ = main.o \
       utility.o
 
 CFLAGS+= $(BASINC) 
-LIB+= 
+LIB+= #-lboost_regex
 
 all: $(PROG_NAME) 
 

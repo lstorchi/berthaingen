@@ -1,7 +1,18 @@
 #include <string>
 #include <sstream>
+#include <algorithm>
+
+//#include <boost/regex.hpp>
 
 #include "utility.hpp"
+
+namespace 
+{
+  bool both_are_spaces (char lhs, char rhs) 
+  { 
+    return (lhs == rhs) && (lhs == ' '); 
+  }
+}
 
 bool berthaingen::is_float (const std::string & s) 
 {
@@ -42,4 +53,13 @@ void berthaingen::tokenize (const std::string & str,
     lastPos = str.find_first_not_of(delimiters, pos);
     pos = str.find_first_of(delimiters, lastPos);
   }
+}
+
+void berthaingen::multispace_to_single (std::string & str)
+{
+  std::string::iterator new_end = 
+    std::unique(str.begin(), str.end(), both_are_spaces);
+  str.erase(new_end, str.end());   
+
+  //boost::regex_replace(str, boost::regex("[' ']{2,}"), " ");
 }

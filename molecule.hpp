@@ -69,6 +69,8 @@ namespace berthaingen
        {
          return symbol_;
        };
+
+       friend std::ostream& operator<<(std::ostream &, const atom &);  
    };
 
    class bond
@@ -98,6 +100,8 @@ namespace berthaingen
        {
          reset_ ();
        };
+
+       bond (int, int, bond_type);
        
        ~bond()
        {
@@ -110,6 +114,30 @@ namespace berthaingen
        {
          type_ = in;
        };
+
+       void set_a1(int in)
+       {
+         aidx1_ = in;
+       };
+
+       int get_a1() const
+       {
+         return aidx1_ ;
+       };
+
+       void set_a2(int in)
+       {
+         aidx2_ = in;
+       };
+
+       int get_a2() const
+       {
+         return aidx2_;
+       };
+
+       int get_type() const;
+
+       friend std::ostream& operator<<(std::ostream &, const bond &);  
    };
    
    class molecule 
@@ -175,5 +203,7 @@ namespace berthaingen
        }
 
        bool read_xyz_file (const char *);
+
+       friend std::ostream& operator<<(std::ostream &, const molecule &);  
    };
 }

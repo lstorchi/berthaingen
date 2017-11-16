@@ -66,7 +66,15 @@ int main (int argc, char ** argv)
 
   berthaingen::molecule mol;
 
-  mol.read_xyz_file(filename.c_str());
+  if (mol.read_xyz_file(filename.c_str()))
+  {
+    std::cout << "Atoms: " << mol.get_atomsize() << std::endl;
+  }
+  else
+  {
+    std::cerr << "Error in parsing " << filename << std::endl;
+    return EXIT_FAILURE;
+  }
 
-  return 0;
+  return EXIT_SUCCESS;
 }
