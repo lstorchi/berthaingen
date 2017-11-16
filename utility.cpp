@@ -13,7 +13,7 @@ bool berthaingen::is_float (const std::string & s)
   return iss.eof() && !iss.fail(); 
 }
 
-bool berthaingen::isInteger(const std::string & s)
+bool berthaingen::is_integer(const std::string & s)
 {
   if(s.empty() || ((!isdigit(s[0])) && 
         (s[0] != '-') && (s[0] != '+'))) 

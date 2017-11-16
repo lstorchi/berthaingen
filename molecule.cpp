@@ -3,13 +3,9 @@
 #include <iostream>
 
 #include "molecule.hpp"
+#include "utility.hpp"
 
 using namespace berthaingen;
-
-namespace 
-{
-
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 //   atom public
@@ -83,7 +79,10 @@ bool molecule::read_xyz_file (const char * filename)
   std::string molname, buf;
 
   infile >> buf;
-  
+ 
+  if (! is_integer (buf))
+    return false;
+
   std::cout << buf;
 
   infile >> molname;
