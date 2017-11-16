@@ -68,7 +68,7 @@ int main (int argc, char ** argv)
 
   if (mol.read_xyz_file(filename.c_str()))
   {
-    std::cout << "Atoms: " << mol.get_atomsize() << std::endl;
+    std::cout << mol << std::endl;
   }
   else
   {

@@ -20,16 +20,6 @@ atom::atom(float x, float y, float z, const char * s)
   this->set_symbol(s);
 }
 
-std::ostream & operator<< (std::ostream & os, const atom & a)  
-{  
-  os << a.get_symbol() << " " 
-     << a.get_x() << " "
-     << a.get_y() << " "
-     << a.get_z();
-          
-  return os;  
-}  
-
 ///////////////////////////////////////////////////////////////////////////////
 //   bond public
 ///////////////////////////////////////////////////////////////////////////////
@@ -80,15 +70,7 @@ int bond::get_type() const
   }
 }
 
-std::ostream& operator<<(std::ostream & os, const bond & b)
-{
-  os << b.get_a1() << " " 
-     << b.get_a2() << " " 
-     << b.get_type();
-          
-  return os;  
-}
- 
+
 ///////////////////////////////////////////////////////////////////////////////
 //   molecule public
 ///////////////////////////////////////////////////////////////////////////////
@@ -161,8 +143,6 @@ bool molecule::read_xyz_file (const char * filename)
   }
 
 }
-
-
 
 /////////////////////////////////////////////////////////////////////////////////
 //   molecule private

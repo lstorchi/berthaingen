@@ -69,8 +69,16 @@ namespace berthaingen
        {
          return symbol_;
        };
+       
+       inline friend std::ostream & operator<< (std::ostream & os, const atom & a)  
+       { 
+         os << a.get_symbol() << " " 
+            << a.get_x() << " "
+            << a.get_y() << " "
+            << a.get_z();
 
-       friend std::ostream& operator<<(std::ostream &, const atom &);  
+         return os;  
+       }
    };
 
    class bond
@@ -136,8 +144,15 @@ namespace berthaingen
        };
 
        int get_type() const;
-
-       friend std::ostream& operator<<(std::ostream &, const bond &);  
+       
+       inline friend std::ostream& operator<<(std::ostream & os, const bond & b)
+       {
+         os << b.get_a1() << " " 
+            << b.get_a2() << " " 
+            << b.get_type();
+         
+         return os;  
+       }
    };
    
    class molecule 
@@ -203,7 +218,25 @@ namespace berthaingen
        }
 
        bool read_xyz_file (const char *);
-
-       friend std::ostream& operator<<(std::ostream &, const molecule &);  
-   };
+       
+       inline friend std::ostream & operator<< (std::ostream & os, const molecule & m)
+       {
+         os << "Atoms: " << m.get_atomsize() << std::endl;
+         std::vector<atom>::const_iterator aiter = m.get_atomlist().begin();
+         for (; aiter != m.get_atomlist().end(); ++aiter)
+           os << aiter->get_symbol() << " " 
+              << aiter->get_x()  << " "
+              << aiter->get_y()  << " "
+              << aiter->get_z()  << std::endl;
+         
+         os << "Bonds: " << m.get_bondsize() << std::endl;
+         std::vector<bond>::const_iterator biter = m.get_bondlist().begin();
+         for (; biter != m.get_bondlist().end(); ++biter)
+           os << biter->get_a1() << " " 
+              << biter->get_a2() << " " 
+              << biter->get_type() << std::endl;
+                 
+         return os;  
+       };
+    };
 }
