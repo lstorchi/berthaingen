@@ -28,7 +28,7 @@ clean:
 	rm -rf $(OBJ) $(PROG_NAME)
 
 
-main.o: molecule.hpp utility.hpp
-molecule.o: molecule.hpp utility.hpp
+main.o: molecule.hpp utility.hpp ptable.hpp
+molecule.o: molecule.hpp utility.hpp ptable.hpp
 utility.o: utility.hpp
 ptables.o: ptable.hpp
