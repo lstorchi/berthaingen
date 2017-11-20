@@ -1,5 +1,10 @@
+#ifndef _BERTHAINGEN_MOLECULE_INC_
+#define _BERTHAINGEN_MOLECULE_INC_
+
 #include <string>
 #include <vector>
+
+#include "ptable.hpp"
 
 namespace berthaingen
 {
@@ -8,12 +13,12 @@ namespace berthaingen
      private:
    
        float x_, y_, z_;
-       std::string symbol_;
+       ptable::element e_;
    
        void reset_ ()
        {
          x_ = y_ = z_ = 0.0d;
-         symbol_ = "";
+         e_ = ptable::NO_ELEMENT;
        }
    
      public:
@@ -47,7 +52,12 @@ namespace berthaingen
    
        void set_symbol(const char * s)
        {
-         symbol_ = s;
+         e_ = ptable::symbol_to_element(s);
+       };
+
+       void set_symbol(ptable::element e)
+       {
+         e_ = e;
        };
    
        double get_x() const
@@ -64,10 +74,16 @@ namespace berthaingen
        {
          return z_;
        };
+
+       ptable::element get_element() const
+       {
+         return e_;
+       };
    
        std::string get_symbol() const
        {
-         return symbol_;
+         std::string symbol = ptable::atomic_symbol (e_);
+         return symbol;
        };
        
        inline friend std::ostream & operator<< (std::ostream & os, const atom & a)  
@@ -240,3 +256,5 @@ namespace berthaingen
        };
     };
 }
+
+#endif

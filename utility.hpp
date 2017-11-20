@@ -1,3 +1,6 @@
+#ifndef _BERTHAINGEN_UTILITY_INC_
+#define _BERTHAINGEN_UTILITY_INC_
+
 #include <string>
 #include <vector>
 
@@ -12,3 +15,5 @@ namespace berthaingen
 
   void multispace_to_single (std::string &);
 }
+
+#endif

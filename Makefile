@@ -13,7 +13,8 @@ PROG_NAME = berthaingen
 
 OBJ = main.o \
       molecule.o \
-      utility.o
+      utility.o \
+      ptable.o
 
 CFLAGS+= $(BASINC) 
 LIB+= #-lboost_regex
@@ -30,3 +31,4 @@ clean:
 main.o: molecule.hpp utility.hpp
 molecule.o: molecule.hpp utility.hpp
 utility.o: utility.hpp
+ptables.o: ptable.hpp
