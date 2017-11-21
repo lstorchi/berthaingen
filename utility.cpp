@@ -1,5 +1,7 @@
 #include <string>
 #include <sstream>
+#include <fstream>
+#include <iostream>
 #include <algorithm>
 
 //#include <boost/regex.hpp>
@@ -62,4 +64,60 @@ void berthaingen::multispace_to_single (std::string & str)
   str.erase(new_end, str.end());   
 
   //boost::regex_replace(str, boost::regex("[' ']{2,}"), " ");
+}
+
+bool berthaingen::split_atom_and_basis (
+    const std::vector<std::string> & setfname,
+    std::map<berthaingen::ptable::element, std::vector<std::string> > & 
+    set_map, std::stringstream & errmsg)
+{
+  std::vector<std::string>::const_iterator iter = setfname.begin();
+  for (; iter != setfname.end(); ++iter)
+  {
+    std::vector<std::string> vctstring;
+    berthaingen::tokenize (*iter, vctstring, ":");
+    if (vctstring.size() == 2)
+    {
+      berthaingen::ptable::element e = 
+        berthaingen::ptable::symbol_to_element(vctstring[0].c_str());
+
+      if (e == berthaingen::ptable::NO_ELEMENT)
+      {
+        errmsg << "Error in element: " << vctstring[0];
+        return false;
+      }
+
+      std::vector<std::string> lines;
+      std::ifstream fp;
+      fp.open(vctstring[1].c_str());
+      if (fp.is_open()) 
+      {
+        while (!fp.eof()) 
+        {
+          std::string line;
+          std::getline (fp, line);
+          if (line.find_first_not_of("\t\n ") != std::string::npos)
+            lines.push_back(line);
+        }
+      }
+      fp.close();
+
+      if (set_map.find(e) == set_map.end())
+      {
+        set_map[e] = lines;
+      }
+      else
+      {
+        errmsg << "Element " << vctstring[0] << " many times present ";
+        return false;
+      }
+    }
+    else
+    {
+      errmsg << "Error in set: " << *iter;
+      return false;
+    }
+  }
+
+  return true;
 }

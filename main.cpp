@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 
 #include <getopt.h>
 
@@ -54,13 +55,42 @@ int main (int argc, char ** argv)
         berthaingen::tokenize (inputs, fitset_fname, ";");
         break;
       default:
-	usages (argv[0]);
+        usages (argv[0]);
         break;
     }
   }
 
   if (optind >= argc) 
     usages (argv[0]);
+
+  if (basisset_fname.size() == 0)
+  {
+    std::cerr << "Need to specify the basis set " << std::endl;
+    return EXIT_FAILURE; 
+  }
+
+  if (fitset_fname.size() == 0)
+  {
+    std::cerr << "Need to specify the fitting set " << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  std::map<berthaingen::ptable::element, std::vector<std::string> > 
+    basisset_map;
+  std::stringstream errmsg;
+  if (! split_atom_and_basis (basisset_fname, basisset_map, errmsg))
+  {
+    std::cerr << errmsg.str() << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  std::map<berthaingen::ptable::element, std::vector<std::string> > 
+    fitset_map;
+  if (! split_atom_and_basis (fitset_fname, fitset_map, errmsg))
+  {
+    std::cerr << errmsg.str() << std::endl;
+    return EXIT_FAILURE;
+  }
 
   std::string filename = argv[optind];
 
@@ -69,6 +99,7 @@ int main (int argc, char ** argv)
   if (mol.read_xyz_file(filename.c_str()))
   {
     //std::cout << mol << std::endl;
+
     std::cout << "\'TYPE OF BASIS SET; 1 FOR GEOMETRIC, 2 FOR OPTIMIZED\'" << std::endl;
     std::cout << "2" << std::endl;
     std::cout << "\'NUMBER OF CENTRES\'" << std::endl;
@@ -98,7 +129,18 @@ int main (int argc, char ** argv)
                 << berthaingen::ptable::maxl(e) << "," 
                 << "0" << std::endl;
       std::cout << "\'BASIS SET FOR CENTRE " << i+1 << "\'" << std::endl;
-      std::cout << "=== base ===" << std::endl;
+      if (basisset_map.find(e) != basisset_map.end())
+      {
+        std::vector<std::string>::iterator it = basisset_map[e].begin();
+        for (; it != basisset_map[e].end(); ++it)
+          std::cout << *it  << std::endl;
+      }
+      else
+      {
+        std::cerr << "Cannot find a basis set for element : " << 
+          atoms[i].get_element();
+        return EXIT_FAILURE;
+      }
     }
 
     std::cout << "\'NUMBER OF CLOSED-SHELL ELECTRONS\'" << std::endl;
