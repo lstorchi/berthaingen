@@ -138,8 +138,6 @@ namespace berthaingen
       static const char * element_name (element);
 
       static element symbol_to_element (const char *);
-
-      static int maxl (element);
   };
 }
 

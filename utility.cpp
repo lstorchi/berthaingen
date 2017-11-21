@@ -66,6 +66,16 @@ void berthaingen::multispace_to_single (std::string & str)
   //boost::regex_replace(str, boost::regex("[' ']{2,}"), " ");
 }
 
+void berthaingen::rtrim(std::string & s, const std::string & delimiters)
+{
+  s.erase(s.find_last_not_of( delimiters ) + 1 );
+}
+ 
+void berthaingen::ltrim(std::string & s, const std::string & delimiters)
+{
+  s.erase(0, s.find_first_not_of( delimiters ) );
+}
+
 bool berthaingen::split_atom_and_basis (
     const std::vector<std::string> & setfname,
     std::map<berthaingen::ptable::element, std::vector<std::string> > & 
@@ -97,10 +107,23 @@ bool berthaingen::split_atom_and_basis (
           std::string line;
           std::getline (fp, line);
           if (line.find_first_not_of("\t\n ") != std::string::npos)
+          {
+            multispace_to_single (line);
+            ltrim(line, " \t");
+            rtrim(line, " \t");
+
             lines.push_back(line);
+          }
         }
       }
       fp.close();
+
+      if (lines.size() == 0)
+      {
+        errmsg << "Error in element " << vctstring[0] <<
+          " file is empty ";
+        return false;
+      }
 
       if (set_map.find(e) == set_map.end())
       {

@@ -19,6 +19,10 @@ namespace berthaingen
 
   void multispace_to_single (std::string &);
   
+  void rtrim(std::string &, const std::string & delimiters = " \f\n\r\t\v");
+
+  void ltrim(std::string &, const std::string & delimiters = " \f\n\r\t\v");
+  
   bool split_atom_and_basis (const std::vector<std::string> &,
       std::map<berthaingen::ptable::element, std::vector<std::string> > &,
       std::stringstream & errmsg);
