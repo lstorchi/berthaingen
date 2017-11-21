@@ -12,10 +12,10 @@ void usages (char * name)
 {
   std::cerr << "usage: " << name << " [option] xyz" << std::endl;
   std::cerr << " -h, --help                   : display this help and exit" << std::endl;
-  std::cerr << " -b, --basis-set=[filename1;...;filename2]   " << std::endl;
-  std::cerr << "                              : specify basisset filenames " << std::endl; 
-  std::cerr << " -f, --fit-set=[filename1;...;filename2]     " << std::endl;
-  std::cerr << "                              : specify fitset filenames " << std::endl;  
+  std::cerr << " -b, --basis-set=\"asymbol1:filename1;...;asymbolN:filenameN\"    " << std::endl;
+  std::cerr << "                              : specify basisset filenames and atoms" << std::endl; 
+  std::cerr << " -f, --fit-set=\"asymbol1:filename1;...;asymbolN:filenameN\"     " << std::endl;
+  std::cerr << "                              : specify fitset filenames and atoms" << std::endl;  
  
   exit (1);
 }
@@ -31,8 +31,8 @@ int main (int argc, char ** argv)
     int c, option_index;
     static struct option long_options[] = {
       {"help", 0, NULL, 'h'},
-      {"basis-set", 0, NULL, 'b'},
-      {"fit-set", 0, NULL, 's'},
+      {"basis-set", 1, NULL, 'b'},
+      {"fit-set", 1, NULL, 'f'},
       {0, 0, 0, 0}
     };
 
