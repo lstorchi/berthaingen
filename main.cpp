@@ -134,7 +134,8 @@ int main (int argc, char ** argv)
       for (; it != atoms.end(); ++it)
       {
         berthaingen::ptable::element e = it->get_element();
-        totelectron += berthaingen::ptable::atomic_number(e);
+        totelectron += berthaingen::ptable::atomic_number(e) - 
+          it->get_charge();
       }
       
       for (int i = 0; i < mol.get_atomsize(); ++i)
@@ -151,7 +152,7 @@ int main (int argc, char ** argv)
           fout << berthaingen::ptable::atomic_number(e) << ","
                     << berthaingen::ptable::atomic_weight(e) << ","
                     << *it << "," // MAXL
-                    << "0" << std::endl;
+                    << atoms[i].get_charge() << std::endl;
           fout << "\'BASIS SET FOR CENTER " << i+1 << "\'" << std::endl;
           it++;
           for (; it != basisset_map[e].end(); ++it)
@@ -190,7 +191,7 @@ int main (int argc, char ** argv)
       fout << "\'scalapack\'" << std::endl;
       fout << "2 2 32 2.0" << std::endl;
       fout << "\'maxit\'" << std::endl;
-      fout << "3" << std::endl;
+      fout << "100" << std::endl;
     }
 
     fout.close();

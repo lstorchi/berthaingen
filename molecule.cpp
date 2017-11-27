@@ -13,6 +13,8 @@ using namespace berthaingen;
 
 atom::atom(double x, double y, double z, const char * s)
 {
+  this->reset_ ();
+
   this->set_x(x);
   this->set_y(y);
   this->set_z(z);
@@ -146,6 +148,31 @@ bool molecule::read_xyz_file (const char * filename)
       else
         return false;
     }
+    else if (tokens.size() == 5)
+    {
+      if (is_float(tokens[1]) && 
+          is_float(tokens[2]) &&
+          is_float(tokens[3]) &&
+          is_integer(tokens[4]))
+      {
+        //std::cout << std::stod(tokens[1]) << " " <<
+        //  std::stod(tokens[2]) << " " <<
+        //  std::stod(tokens[3]) << " " << 
+        //  std::stoi(tokens[4]) << std::endl;
+
+        atom a(std::stod(tokens[1]), 
+            std::stod(tokens[2]), 
+            std::stod(tokens[3]),
+            tokens[0].c_str());
+
+        a.set_charge(std::stoi(tokens[4]));
+
+        add_atom(a);
+      }
+      else
+        return false;
+    }
+ 
     else
       return false;
   }

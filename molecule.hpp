@@ -12,11 +12,13 @@ namespace berthaingen
    {
      private:
    
+       int charge_;
        double x_, y_, z_;
        ptable::element e_;
    
        void reset_ ()
        {
+         charge_ = 0;
          x_ = y_ = z_ = 0.0d;
          e_ = ptable::NO_ELEMENT;
        }
@@ -59,6 +61,16 @@ namespace berthaingen
        {
          e_ = e;
        };
+
+       void set_charge (int in)
+       {
+         charge_ = in;
+       };
+
+       int get_charge() const
+       {
+         return charge_;
+       };
    
        double get_x() const
        {
@@ -91,7 +103,8 @@ namespace berthaingen
          os << a.get_symbol() << " " 
             << a.get_x() << " "
             << a.get_y() << " "
-            << a.get_z();
+            << a.get_z() << " "
+            << a.get_charge();
 
          return os;  
        }
@@ -243,7 +256,8 @@ namespace berthaingen
            os << aiter->get_symbol() << " " 
               << aiter->get_x()  << " "
               << aiter->get_y()  << " "
-              << aiter->get_z()  << std::endl;
+              << aiter->get_z()  << " " 
+              << aiter->get_charge() << std::endl;
          
          os << "Bonds: " << m.get_bondsize() << std::endl;
          std::vector<bond>::const_iterator biter = m.get_bondlist().begin();
