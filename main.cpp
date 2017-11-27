@@ -185,8 +185,8 @@ int main (int argc, char ** argv)
       fout << "3" << std::endl;
       fout << "\'EX-POTENTIAL available: LDA, B88P86,HCTH93\'" << std::endl;
       fout << "BLYP" << std::endl;
-      fout << "\'Fitt\'" << std::endl;
-      fout << "2" << std::endl;
+      fout << "\'Fitt\' USEFITT" << std::endl;
+      fout << "2 1" << std::endl;
       fout << "\'scalapack\'" << std::endl;
       fout << "2 2 32 2.0" << std::endl;
       fout << "\'maxit\'" << std::endl;
