@@ -12,7 +12,7 @@ namespace berthaingen
    {
      private:
    
-       float x_, y_, z_;
+       double x_, y_, z_;
        ptable::element e_;
    
        void reset_ ()
@@ -28,7 +28,7 @@ namespace berthaingen
          reset_ ();
        };
 
-       atom(float, float, float, const char *);
+       atom(double, double, double, const char *);
        
        ~atom()
        {

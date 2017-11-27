@@ -11,11 +11,11 @@ using namespace berthaingen;
 //   atom public
 ///////////////////////////////////////////////////////////////////////////////
 
-atom::atom(float x, float y, float z, const char * s)
+atom::atom(double x, double y, double z, const char * s)
 {
   this->set_x(x);
   this->set_y(y);
-  this->set_y(y);
+  this->set_z(z);
 
   this->set_symbol(s);
 }
@@ -122,15 +122,23 @@ bool molecule::read_xyz_file (const char * filename)
 
     berthaingen::tokenize (buf, tokens, " ");
 
+    //std::vector<std::string>::iterator itt = tokens.begin();
+    //for (; itt != tokens.end(); ++itt)
+    //  std::cout << *itt << std::endl;
+
     if (tokens.size() == 4)
     {
       if (is_float(tokens[1]) && 
           is_float(tokens[2]) &&
           is_float(tokens[3]))
       {
-        atom a(std::stof(tokens[1]), 
-            std::stof(tokens[2]), 
-            std::stof(tokens[3]),
+        //std::cout << std::stod(tokens[1]) << " " <<
+        //  std::stod(tokens[2]) << " " <<
+        //  std::stod(tokens[3]) << std::endl;
+
+        atom a(std::stod(tokens[1]), 
+            std::stod(tokens[2]), 
+            std::stod(tokens[3]),
             tokens[0].c_str());
 
         add_atom(a);
