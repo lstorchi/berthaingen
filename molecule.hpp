@@ -246,7 +246,7 @@ namespace berthaingen
          bonds_.push_back(b);
        }
 
-       bool read_xyz_file (const char *);
+       bool read_xyz_file (const char *, bool antoau = false);
        
        inline friend std::ostream & operator<< (std::ostream & os, const molecule & m)
        {

@@ -22,6 +22,7 @@ void usages (char * name)
   std::cerr << "                              : specify bertha input filename (default: input.inp" << std::endl;  
   std::cerr << " -O, --out-fittfname=\"filename\"     " << std::endl;
   std::cerr << "                              : specify bertha fitting input filename (default: fitt2.inp" << std::endl;  
+  std::cerr << " -c, --convert-antoau         : convert angstrom coordinate to a.u." << std::endl;
  
  
   exit (1);
@@ -32,6 +33,7 @@ int main (int argc, char ** argv)
   std::vector<std::string> basisset_fname, fitset_fname;
   std::string bertha_in = "./input.inp";
   std::string fitt_in = "./fitt2.inp";
+  bool convert = false;
 
   while (1) 
   {
@@ -44,10 +46,11 @@ int main (int argc, char ** argv)
       {"fit-set", 1, NULL, 'f'},
       {"out-inputfname", 1, NULL, 'o'},
       {"out-fittfname", 1, NULL, 'O'},
+      {"convert-antoau", 0, NULL, 'c'},
       {0, 0, 0, 0}
     };
 
-    c = getopt_long (argc, argv, "hb:f:o:O:", long_options, &option_index);
+    c = getopt_long (argc, argv, "hcb:f:o:O:", long_options, &option_index);
     
     if (c == -1)
       break;
@@ -55,6 +58,9 @@ int main (int argc, char ** argv)
     switch (c) {
       case 'h':
         usages (argv[0]);
+        break;
+      case 'c':
+        convert = true;
         break;
       case 'o':
         bertha_in.assign(optarg);
@@ -112,7 +118,7 @@ int main (int argc, char ** argv)
 
   berthaingen::molecule mol;
 
-  if (mol.read_xyz_file(filename.c_str()))
+  if (mol.read_xyz_file(filename.c_str(), convert))
   {
     //std::cout << mol << std::endl;
     

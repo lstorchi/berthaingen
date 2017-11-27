@@ -98,12 +98,16 @@ molecule & molecule::operator= (const molecule & molec)
   return *this;
 }
 
-bool molecule::read_xyz_file (const char * filename)
+bool molecule::read_xyz_file (const char * filename, bool antoau)
 {
+  double converter = 1.889725988579;
   std::ifstream infile(filename);
 
   unsigned int num_of_atom;
   std::string molname, buf;
+
+  if (! antoau)
+    converter = 1.0;
 
   getline (infile, buf);
  
@@ -138,9 +142,9 @@ bool molecule::read_xyz_file (const char * filename)
         //  std::stod(tokens[2]) << " " <<
         //  std::stod(tokens[3]) << std::endl;
 
-        atom a(std::stod(tokens[1]), 
-            std::stod(tokens[2]), 
-            std::stod(tokens[3]),
+        atom a(std::stod(tokens[1])*converter, 
+            std::stod(tokens[2])*converter, 
+            std::stod(tokens[3])*converter,
             tokens[0].c_str());
 
         add_atom(a);
@@ -160,9 +164,9 @@ bool molecule::read_xyz_file (const char * filename)
         //  std::stod(tokens[3]) << " " << 
         //  std::stoi(tokens[4]) << std::endl;
 
-        atom a(std::stod(tokens[1]), 
-            std::stod(tokens[2]), 
-            std::stod(tokens[3]),
+        atom a(std::stod(tokens[1])*converter, 
+            std::stod(tokens[2])*converter, 
+            std::stod(tokens[3])*converter,
             tokens[0].c_str());
 
         a.set_charge(std::stoi(tokens[4]));
