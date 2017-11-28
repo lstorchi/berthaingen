@@ -23,7 +23,8 @@ void usages (char * name)
   std::cerr << " -O, --out-fittfname=\"filename\"     " << std::endl;
   std::cerr << "                              : specify bertha fitting input filename (default: fitt2.inp" << std::endl;  
   std::cerr << " -c, --convert-antoau         : convert angstrom coordinate to a.u." << std::endl;
- 
+  std::cerr << " -r, --restart-on             : set restart mode on" << std::endl;
+  std::cerr << " -t, --usefitt-off            : set usefitt mode off " << std::endl;
  
   exit (1);
 }
@@ -34,6 +35,8 @@ int main (int argc, char ** argv)
   std::string bertha_in = "./input.inp";
   std::string fitt_in = "./fitt2.inp";
   bool convert = false;
+
+  int restarton = 1, usefitt = 1;
 
   while (1) 
   {
@@ -47,10 +50,12 @@ int main (int argc, char ** argv)
       {"out-inputfname", 1, NULL, 'o'},
       {"out-fittfname", 1, NULL, 'O'},
       {"convert-antoau", 0, NULL, 'c'},
+      {"restart-on", 0, NULL, 'r'},
+      {"usefitt-off", 0, NULL, 't'},
       {0, 0, 0, 0}
     };
 
-    c = getopt_long (argc, argv, "hcb:f:o:O:", long_options, &option_index);
+    c = getopt_long (argc, argv, "htrcb:f:o:O:", long_options, &option_index);
     
     if (c == -1)
       break;
@@ -58,6 +63,12 @@ int main (int argc, char ** argv)
     switch (c) {
       case 'h':
         usages (argv[0]);
+        break;
+      case 't':
+        usefitt = 0;
+        break;
+      case 'r':
+        restarton = 0;
         break;
       case 'c':
         convert = true;
@@ -177,7 +188,7 @@ int main (int argc, char ** argv)
       fout << "\'SPECIFY CLOSED AND OPEN SHELLS AND COUPLING\'" << std::endl;
       fout << "0" << std::endl;
       fout << "\'ENTER 1 FOR NEW RUN AND 0 FOR RESTART\'" << std::endl;
-      fout << "1" << std::endl;
+      fout << restarton << std::endl;
       fout << "\'LEVEL SHIFT FACTOR IN STAGE 0, 1, AND 2\'" << std::endl;
       fout << "-2.0,-2.0,-2.0" << std::endl;
       fout << "\'STARTING STAGE (0-2)\'" << std::endl;
@@ -193,7 +204,7 @@ int main (int argc, char ** argv)
       fout << "\'EX-POTENTIAL available: LDA, B88P86,HCTH93\'" << std::endl;
       fout << "BLYP" << std::endl;
       fout << "\'Fitt\' USEFITT" << std::endl;
-      fout << "2 1" << std::endl;
+      fout << "2 " << usefitt << std::endl;
       fout << "\'scalapack\'" << std::endl;
       fout << "2 2 32 2.0" << std::endl;
       fout << "\'maxit\'" << std::endl;
