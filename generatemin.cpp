@@ -17,6 +17,8 @@ void usages (char * name)
   std::cerr << "                              : mandatory specify basisset filenames and atoms" << std::endl; 
   std::cerr << " -f, --fit-set=\"asymbol1:filename1;...;asymbolN:filenameN\"     " << std::endl;
   std::cerr << "                              : mandatory specify fitset filenames and atoms" << std::endl;  
+  std::cerr << " -a, --set-values=\"atom1:atom2:dmin:dmax:dr\"     " << std::endl;
+  std::cerr << "                              : set atoms and distances to use" << std::endl;  
   std::cerr << " " << std::endl;
   std::cerr << " -o, --out-inputfname=\"filename\"     " << std::endl;
   std::cerr << "                              : specify bertha input filename (default: input.inp" << std::endl;  
@@ -31,7 +33,8 @@ void usages (char * name)
 
 int main (int argc, char ** argv) 
 {
-  std::vector<std::string> basisset_fname, fitset_fname;
+  std::vector<std::string> basisset_fname, fitset_fname,
+    values;
   bool convert = false;
 
   struct berthaingen::bertha_options berthaopt;
@@ -55,10 +58,11 @@ int main (int argc, char ** argv)
       {"convert-antoau", 0, NULL, 'c'},
       {"restart-on", 0, NULL, 'r'},
       {"usefitt-off", 0, NULL, 't'},
+      {"set-values", 1, NULL, 'a'},
       {0, 0, 0, 0}
     };
 
-    c = getopt_long (argc, argv, "htrcb:f:o:O:", long_options, &option_index);
+    c = getopt_long (argc, argv, "htrcb:f:o:O:a:", long_options, &option_index);
     
     if (c == -1)
       break;
@@ -66,6 +70,10 @@ int main (int argc, char ** argv)
     switch (c) {
       case 'h':
         usages (argv[0]);
+        break;
+      case 'a':
+        inputs.assign(optarg);
+        berthaingen::tokenize (inputs, values, ":");
         break;
       case 't':
         berthaopt.usefitt = 0;
@@ -98,6 +106,36 @@ int main (int argc, char ** argv)
 
   if (optind >= argc) 
     usages (argv[0]);
+
+  int atom1, atom2, nstep;
+  double dmin, dmax, dr;
+
+  if (values.size() == 5)
+  {
+    if ((! berthaingen::is_integer (values[0])) &&
+        (! berthaingen::is_integer (values[1])) &&
+        (! berthaingen::is_float (values[2])) &&
+        (! berthaingen::is_float (values[3])) &&
+        (! berthaingen::is_float (values[4])))
+    {
+      std::cerr << "set-values option error in data type" << std::endl;
+      return false;
+    }
+
+    atom1 = std::stoi(values[0]);
+    atom2 = std::stoi(values[1]);
+
+    dmin = std::stod(values[2]);
+    dmax = std::stod(values[3]);
+    dr = std::stod(values[4]);
+
+    nstep = (int) ((dmax-dmin)/dr) + 1;
+  }
+  else
+  {
+    std::cerr << "set-values option error" << std::endl;
+    return EXIT_FAILURE;
+  }
 
   if (basisset_fname.size() == 0)
   {
@@ -135,6 +173,10 @@ int main (int argc, char ** argv)
   if (mol.read_xyz_file(filename.c_str(), convert))
   {
     std::stringstream errmsg;
+
+    for (int i = 0; i<nstep; ++i)
+      std::cout <<  dmin + i * dr << std::endl;
+
 
   }
   else
