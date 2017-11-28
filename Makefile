@@ -9,9 +9,9 @@
 
 include ./config.mk
 
-PROG_NAME = berthaingen
+PROG_NAME1 = berthaingen
 
-OBJ = main.o \
+OBJ1 = berthaingen.o \
       molecule.o \
       utility.o \
       ptable.o
@@ -19,16 +19,16 @@ OBJ = main.o \
 CFLAGS+= $(BASINC) 
 LIB+= #-lboost_regex
 
-all: $(PROG_NAME) 
+all: $(PROG_NAME1) 
 
-$(PROG_NAME): $(OBJ)
-	$(CXX) -o $(@) $(OBJ) $(LIB) 
+$(PROG_NAME1): $(OBJ1)
+	$(CXX) -o $(@) $(OBJ1) $(LIB) 
 
 clean:
-	rm -rf $(OBJ) $(PROG_NAME)
+	rm -rf $(OBJ1) $(PROG_NAME1)
 
 
-main.o: molecule.hpp utility.hpp ptable.hpp
+berthaingen.o: molecule.hpp utility.hpp ptable.hpp
 molecule.o: molecule.hpp utility.hpp ptable.hpp
 utility.o: utility.hpp
 ptables.o: ptable.hpp
