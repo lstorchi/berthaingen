@@ -134,14 +134,8 @@ int main (int argc, char ** argv)
 
   if (mol.read_xyz_file(filename.c_str(), convert))
   {
-    //std::cout << mol << std::endl;
     std::stringstream errmsg;
 
-    if (! writefiles (mol, berthaopt, basisset_map, fitset_map, errmsg))
-    {
-      std::cerr << errmsg.str() << std::endl;
-      return EXIT_FAILURE;
-    }
   }
   else
   {

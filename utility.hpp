@@ -6,10 +6,15 @@
 #include <vector>
 #include <map>
 
-#include "ptable.hpp"
+#include "molecule.hpp"
 
 namespace berthaingen
 {
+  struct bertha_options {
+    std::string bertha_in, fitt_in;
+    int restarton, usefitt;
+  };
+
   void tokenize (const std::string &, std::vector<std::string> &,
       const std::string & delimiters = " ");
   
@@ -26,5 +31,10 @@ namespace berthaingen
   bool split_atom_and_basis (const std::vector<std::string> &,
       std::map<berthaingen::ptable::element, std::vector<std::string> > &,
       std::stringstream & errmsg);
+
+  bool writefiles (const molecule &, const struct bertha_options &,
+      std::map<ptable::element, std::vector<std::string> > &,
+      std::map<ptable::element, std::vector<std::string> > &,
+      std::stringstream &);
 }
 #endif
