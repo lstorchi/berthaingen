@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 
+#include <cmath>
+
 #include <getopt.h>
 
 #include "molecule.hpp"
@@ -11,13 +13,13 @@
 
 void usages (char * name) 
 {
-  std::cerr << "usage: " << name << " [options] xyz" << std::endl;
+  std::cerr << "usage: " << name << " [options] file1.xyz file2.xyz" << std::endl;
   std::cerr << " -h, --help                   : display this help and exit" << std::endl;
   std::cerr << " -b, --basis-set=\"asymbol1:filename1;...;asymbolN:filenameN\"    " << std::endl;
   std::cerr << "                              : mandatory specify basisset filenames and atoms" << std::endl; 
   std::cerr << " -f, --fit-set=\"asymbol1:filename1;...;asymbolN:filenameN\"     " << std::endl;
   std::cerr << "                              : mandatory specify fitset filenames and atoms" << std::endl;  
-  std::cerr << " -a, --set-values=\"atom1:atom2:dmin:dmax:dr\"     " << std::endl;
+  std::cerr << " -a, --set-values=\"atom1infile1:atom2infile2:dmin:dmax:dr\"     " << std::endl;
   std::cerr << "                              : set atoms and distances to use" << std::endl;  
   std::cerr << " " << std::endl;
   std::cerr << " -o, --out-inputfname=\"filename\"     " << std::endl;
@@ -104,7 +106,7 @@ int main (int argc, char ** argv)
     }
   }
 
-  if (optind >= argc) 
+  if ((argc - optind) != 2) 
     usages (argv[0]);
 
   int atom1, atom2, nstep;
@@ -166,22 +168,59 @@ int main (int argc, char ** argv)
     return EXIT_FAILURE;
   }
 
-  std::string filename = argv[optind];
+  std::string filename1 = argv[optind];
+  std::string filename2 = argv[optind+1];
 
-  berthaingen::molecule mol;
+  berthaingen::molecule mol1, mol2;
+  bool f1, f2;
 
-  if (mol.read_xyz_file(filename.c_str(), convert))
+  if ((f1 = mol1.read_xyz_file(filename1.c_str(), convert)) &&
+      (f2 = mol2.read_xyz_file(filename2.c_str(), convert)))
   {
     std::stringstream errmsg;
 
-    for (int i = 0; i<nstep; ++i)
-      std::cout <<  dmin + i * dr << std::endl;
+    if ((atom1 <= mol1.get_atomsize()) && 
+        (atom2 <= mol2.get_atomsize()))
+    {    
+      berthaingen::atom a1 = mol1.get_atom(atom1 - 1);
+      berthaingen::atom a2 = mol2.get_atom(atom2 - 1);
 
+      // Maybe a 3D point clss ... is needed 
+      double len = pow((a1.get_x() - a2.get_x()), 2.0) + 
+         pow((a1.get_y() - a2.get_y()), 2.0) +
+         pow((a1.get_z() - a2.get_z()), 2.0);
+      len = sqrt(len);
 
+      double xvers = (a1.get_x() - a2.get_x())/len;
+      double yvers = (a1.get_y() - a2.get_y())/len;
+      double zvers = (a1.get_z() - a2.get_z())/len;
+
+      mol1.center (a1.get_x(), a1.get_y(), a1.get_z());
+      mol2.center (a2.get_x(), a2.get_y(), a2.get_z());
+
+      for (int i = 0; i<nstep; ++i)
+      {
+        double val = dmin + (double) i * dr;
+        mol2.center (xvers*val, yvers*val, zvers*val);
+
+        std::cout << dmin + i * dr << std::endl;
+        std::cout << mol2 << std::endl;
+
+        mol2.center (-1.0*xvers*val, -1.0*yvers*val, -1.0*zvers*val);
+      }
+    }
+    else
+    {
+      std::cerr << "Wrtong atom number" << std::endl;
+      return EXIT_FAILURE;
+    }
   }
   else
   {
-    std::cerr << "Error in parsing " << filename << std::endl;
+    if (!f1)
+      std::cerr << "Error in parsing " << filename1 << std::endl;
+    if (!f2)
+      std::cerr << "Error in parsing " << filename2 << std::endl;
     return EXIT_FAILURE;
   }
 

@@ -22,6 +22,13 @@ atom::atom(double x, double y, double z, const char * s)
   this->set_symbol(s);
 }
 
+void atom::translate (double x, double y, double z)
+{
+  x_ -= x;
+  y_ -= y;
+  z_ -= z;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //   bond public
 ///////////////////////////////////////////////////////////////////////////////
@@ -96,6 +103,13 @@ molecule & molecule::operator= (const molecule & molec)
   }
 
   return *this;
+}
+
+void molecule::center (double x, double y, double z)
+{
+  std::vector<atom>::iterator aiter = atoms_.begin();
+  for (; aiter != atoms_.end(); ++aiter)
+    aiter->translate(x, y, z);
 }
 
 bool molecule::read_xyz_file (const char * filename, bool antoau)

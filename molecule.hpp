@@ -8,6 +8,7 @@
 
 namespace berthaingen
 {
+   // maybe I need to adda 3D point class 
    class atom
    {
      private:
@@ -36,6 +37,8 @@ namespace berthaingen
        {
          reset_ ();
        };
+
+       void translate (double, double, double);
    
        void set_x(double in)
        {
@@ -215,6 +218,13 @@ namespace berthaingen
        };
 
        molecule & operator= (const molecule &); 
+
+       void center (double, double, double);
+
+       const atom & get_atom (int idx)
+       {
+         return atoms_[idx];
+       };
 
        const std::vector<atom> & get_atomlist () const
        {
