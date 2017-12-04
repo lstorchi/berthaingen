@@ -207,11 +207,13 @@ int main (int argc, char ** argv)
         double val = dmin + (double) i * dr;
         mol2.center (xvers*val, yvers*val, zvers*val);
 
+        std::cout << val << std::endl;
+
         berthaingen::molecule mol = mol1;
 
         mol.add_fragment(mol2);
 
-        std::cout << mol << std::endl;
+        //std::cout << mol << std::endl;
 
         std::stringstream errmsg;
         
