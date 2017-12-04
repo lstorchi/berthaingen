@@ -256,6 +256,8 @@ namespace berthaingen
          bonds_.push_back(b);
        }
 
+       void add_fragment (const molecule & );
+
        bool read_xyz_file (const char *, bool antoau = false);
        
        inline friend std::ostream & operator<< (std::ostream & os, const molecule & m)

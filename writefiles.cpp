@@ -12,10 +12,11 @@ bool berthaingen::writefiles (const berthaingen::molecule & mol,
           std::vector<std::string> > & basisset_map,
     std::map<berthaingen::ptable::element, 
           std::vector<std::string> > & fitset_map, 
-    std::stringstream & errmsg)
+    std::stringstream & errmsg,
+    const std::string & prefix)
 { 
 
-  std::ofstream fout(berthaopt.bertha_in.c_str(), 
+  std::ofstream fout((prefix + berthaopt.bertha_in).c_str(), 
       std::ios::out | std::ios::trunc);
   
   if (fout) 
@@ -92,10 +93,15 @@ bool berthaingen::writefiles (const berthaingen::molecule & mol,
     fout << "\'maxit\'" << std::endl;
     fout << "100" << std::endl;
   }
+  else 
+  {
+    errmsg << "Error while opening file " << prefix + berthaopt.bertha_in;
+    return false;
+  }
 
   fout.close();
 
-  std::ofstream foutf(berthaopt.fitt_in.c_str(), 
+  std::ofstream foutf((prefix + berthaopt.fitt_in).c_str(), 
       std::ios::out | std::ios::trunc);
   
   if (foutf) 
@@ -125,6 +131,13 @@ bool berthaingen::writefiles (const berthaingen::molecule & mol,
       }
     }
   }
+  else 
+  {
+    errmsg << "Error while opening file " << prefix + berthaopt.fitt_in;
+    return false;
+  }
+
+ 
 
   foutf.close();
 

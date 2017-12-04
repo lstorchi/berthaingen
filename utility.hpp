@@ -35,6 +35,6 @@ namespace berthaingen
   bool writefiles (const molecule &, const struct bertha_options &,
       std::map<ptable::element, std::vector<std::string> > &,
       std::map<ptable::element, std::vector<std::string> > &,
-      std::stringstream &);
+      std::stringstream &, const std::string & prefix = "");
 }
 #endif

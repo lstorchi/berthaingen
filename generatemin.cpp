@@ -41,8 +41,8 @@ int main (int argc, char ** argv)
 
   struct berthaingen::bertha_options berthaopt;
 
-  berthaopt.bertha_in = "./input.inp";
-  berthaopt.fitt_in = "./fitt2.inp";
+  berthaopt.bertha_in = "input.inp";
+  berthaopt.fitt_in = "fitt2.inp";
   berthaopt.restarton = 1;
   berthaopt.usefitt = 1;
 
@@ -172,7 +172,7 @@ int main (int argc, char ** argv)
   std::string filename2 = argv[optind+1];
 
   berthaingen::molecule mol1, mol2;
-  bool f1, f2;
+  bool f1 = true, f2 = true;
 
   if ((f1 = mol1.read_xyz_file(filename1.c_str(), convert)) &&
       (f2 = mol2.read_xyz_file(filename2.c_str(), convert)))
@@ -200,11 +200,27 @@ int main (int argc, char ** argv)
 
       for (int i = 0; i<nstep; ++i)
       {
+        std::stringstream prefix;
+
+        prefix << i << "_";
+
         double val = dmin + (double) i * dr;
         mol2.center (xvers*val, yvers*val, zvers*val);
 
-        std::cout << dmin + i * dr << std::endl;
-        std::cout << mol2 << std::endl;
+        berthaingen::molecule mol = mol1;
+
+        mol.add_fragment(mol2);
+
+        std::cout << mol << std::endl;
+
+        std::stringstream errmsg;
+        
+        if (! writefiles (mol, berthaopt, basisset_map, fitset_map, errmsg,
+              prefix.str()))
+        {
+          std::cerr << errmsg.str() << std::endl;
+          return EXIT_FAILURE;
+        }
 
         mol2.center (-1.0*xvers*val, -1.0*yvers*val, -1.0*zvers*val);
       }
@@ -219,8 +235,10 @@ int main (int argc, char ** argv)
   {
     if (!f1)
       std::cerr << "Error in parsing " << filename1 << std::endl;
+
     if (!f2)
       std::cerr << "Error in parsing " << filename2 << std::endl;
+
     return EXIT_FAILURE;
   }
 
