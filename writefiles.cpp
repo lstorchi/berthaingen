@@ -61,7 +61,7 @@ bool berthaingen::writefiles (const berthaingen::molecule & mol,
       else
       {
         errmsg << "Cannot find a basis set for element : " << 
-          atoms[i].get_element();
+          ptable::atomic_symbol(atoms[i].get_element());
         return false;
       }
     }

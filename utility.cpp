@@ -121,7 +121,7 @@ bool berthaingen::split_atom_and_basis (
       if (lines.size() == 0)
       {
         errmsg << "Error in element " << vctstring[0] <<
-          " file is empty ";
+          " file " << vctstring[1] << "is empty ";
         return false;
       }
 
