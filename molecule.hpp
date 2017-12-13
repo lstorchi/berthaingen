@@ -100,7 +100,7 @@ namespace berthaingen
          std::string symbol = ptable::atomic_symbol (e_);
          return symbol;
        };
-       
+
        inline friend std::ostream & operator<< (std::ostream & os, const atom & a)  
        { 
          os << a.get_symbol() << " " 
@@ -226,6 +226,16 @@ namespace berthaingen
          return atoms_[idx];
        };
 
+       const std::string & get_molname () const
+       {
+         return name_;
+       };
+
+       void set_molname (const char * in) 
+       {
+         name_ = in;
+       };
+
        const std::vector<atom> & get_atomlist () const
        {
          return atoms_;
@@ -259,6 +269,8 @@ namespace berthaingen
        void add_fragment (const molecule & );
 
        bool read_xyz_file (const char *, bool antoau = false);
+
+       void get_xyzfile (std::ostream & os);
        
        inline friend std::ostream & operator<< (std::ostream & os, const molecule & m)
        {

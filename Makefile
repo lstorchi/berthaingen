@@ -11,6 +11,7 @@ include ./config.mk
 
 PROG_NAME1 = berthaingen
 PROG_NAME2 = generatemin
+PROG_NAME3 = mergeatdist
 
 OBJ1 = berthaingen.o \
       molecule.o \
@@ -24,10 +25,15 @@ OBJ2 = generatemin.o \
       ptable.o \
       writefiles.o
 
+OBJ3 = mergeatdist.o \
+      molecule.o \
+      utility.o \
+      ptable.o 
+
 CFLAGS+= $(BASINC) 
 LIB+= #-lboost_regex
 
-all: $(PROG_NAME1) $(PROG_NAME2)
+all: $(PROG_NAME1) $(PROG_NAME2) $(PROG_NAME3)
 
 $(PROG_NAME1): $(OBJ1)
 	$(CXX) -o $(@) $(OBJ1) $(LIB) 
@@ -35,9 +41,13 @@ $(PROG_NAME1): $(OBJ1)
 $(PROG_NAME2): $(OBJ2)
 	$(CXX) -o $(@) $(OBJ2) $(LIB) 
 
-clean:
-	rm -rf $(OBJ1) $(PROG_NAME1) $(OBJ2) $(PROG_NAME2)
+$(PROG_NAME3): $(OBJ3)
+	$(CXX) -o $(@) $(OBJ3) $(LIB) 
 
+clean:
+	rm -rf $(OBJ1) $(PROG_NAME1) $(OBJ2) $(PROG_NAME2) $(OBJ3) $(PROG_NAME3)
+
+mergeatdist.o: molecule.hpp utility.hpp ptable.hpp
 generatemin.o: molecule.hpp utility.hpp ptable.hpp
 berthaingen.o: molecule.hpp utility.hpp ptable.hpp
 molecule.o: molecule.hpp utility.hpp ptable.hpp

@@ -150,6 +150,12 @@ bool molecule::read_xyz_file (const char * filename, bool antoau)
     converter = 1.0;
 
   getline (infile, buf);
+
+  for(int i=0; buf[i]; i++)
+    if(buf[i] == ' ') 
+      buf[i] = '\b';
+
+  //std::cout << buf << std::endl;
  
   if (! is_integer (buf))
     return false;
@@ -216,13 +222,25 @@ bool molecule::read_xyz_file (const char * filename, bool antoau)
       else
         return false;
     }
- 
     else
       return false;
   }
 
 }
 
+void molecule::get_xyzfile (std::ostream & os)
+{
+  os << this->get_atomsize() << std::endl;
+  os << this->get_molname() << std::endl;
+  std::vector<atom>::const_iterator aiter = this->get_atomlist().begin();
+  for (; aiter != this->get_atomlist().end(); ++aiter)
+    os << aiter->get_symbol() << " " 
+       << aiter->get_x()  << " "
+       << aiter->get_y()  << " "
+       << aiter->get_z()  << " " 
+       << aiter->get_charge() << std::endl;
+}
+ 
 /////////////////////////////////////////////////////////////////////////////////
 //   molecule private
 ///////////////////////////////////////////////////////////////////////////////
