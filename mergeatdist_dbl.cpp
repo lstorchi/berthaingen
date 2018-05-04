@@ -129,11 +129,12 @@ int main (int argc, char ** argv)
   {
     std::stringstream errmsg;
 
+    /*
     std::cout << atom1of1 << " " << mol1.get_atomsize() << std::endl;
     std::cout << atom2of2 << " " << mol2.get_atomsize() << std::endl;
     std::cout << atom1of2 << " " << mol2.get_atomsize() << std::endl;
     std::cout << atom2of3 << " " << mol3.get_atomsize() << std::endl;
-   
+    */
 
     if ((atom1of1 <= mol1.get_atomsize()) && 
         (atom2of2 <= mol2.get_atomsize()) &&
@@ -146,20 +147,20 @@ int main (int argc, char ** argv)
       if (berthaingen::set_mol12_at_dist (mol1, mol2, atom1of1, atom2of2, 
             dist12, mol12))
       {
-        if (berthaingen::set_mol12_at_dist (mol12, mol3, atom1of2, 
-              atom2of3 + mol1.get_atomsize(), dist23, mol))
+        if (berthaingen::set_mol12_at_dist (mol12, mol3, atom1of2 + mol1.get_atomsize(), 
+              atom2of3, dist23, mol))
         {
           mol.get_xyzfile(std::cout);
         }
         else
         {
-          std::cerr << "Error in set_mol" << std::endl;
+          std::cerr << "Error in set_mol 2" << std::endl;
           return EXIT_FAILURE;
         }
       }
       else
       {
-        std::cerr << "Error in set_mol" << std::endl;
+        std::cerr << "Error in set_mol 1" << std::endl;
         return EXIT_FAILURE;
       }
     }

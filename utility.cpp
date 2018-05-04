@@ -42,7 +42,7 @@ bool berthaingen::set_mol12_at_dist (berthaingen::molecule & mol1,
 
     mol2.center (xvers*dist, yvers*dist, zvers*dist);
 
-    berthaingen::molecule mol = mol1;
+    mol = mol1;
 
     mol.add_fragment(mol2);
 
