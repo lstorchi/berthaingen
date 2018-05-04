@@ -1,3 +1,4 @@
+#include <cmath>
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -14,6 +15,41 @@ namespace
   { 
     return (lhs == rhs) && (lhs == ' '); 
   }
+}
+
+bool berthaingen::set_mol12_at_dist (berthaingen::molecule & mol1, 
+    berthaingen::molecule & mol2, int atom1, int atom2, 
+    double dist, berthaingen::molecule & mol)
+{
+  if ((atom1 <= mol1.get_atomsize()) && 
+      (atom2 <= mol2.get_atomsize()))
+  {    
+    berthaingen::atom a1 = mol1.get_atom(atom1 - 1);
+    berthaingen::atom a2 = mol2.get_atom(atom2 - 1);
+
+    // Maybe a 3D point clss ... is needed 
+    double len = pow((a1.get_x() - a2.get_x()), 2.0) + 
+       pow((a1.get_y() - a2.get_y()), 2.0) +
+       pow((a1.get_z() - a2.get_z()), 2.0);
+    len = sqrt(len);
+
+    double xvers = (a1.get_x() - a2.get_x())/len;
+    double yvers = (a1.get_y() - a2.get_y())/len;
+    double zvers = (a1.get_z() - a2.get_z())/len;
+
+    mol1.center (a1.get_x(), a1.get_y(), a1.get_z());
+    mol2.center (a2.get_x(), a2.get_y(), a2.get_z());
+
+    mol2.center (xvers*dist, yvers*dist, zvers*dist);
+
+    berthaingen::molecule mol = mol1;
+
+    mol.add_fragment(mol2);
+
+    return true;
+  }
+
+  return false;
 }
 
 bool berthaingen::is_float (const std::string & s) 

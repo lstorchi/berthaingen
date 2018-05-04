@@ -98,39 +98,17 @@ int main (int argc, char ** argv)
   std::string filename1 = argv[optind];
   std::string filename2 = argv[optind+1];
 
-  berthaingen::molecule mol1, mol2;
+  berthaingen::molecule mol, mol1, mol2;
   bool f1 = true, f2 = true;
 
   if ((f1 = mol1.read_xyz_file(filename1.c_str(), convert)) &&
       (f2 = mol2.read_xyz_file(filename2.c_str(), convert)))
   {
     std::stringstream errmsg;
-
-    if ((atom1 <= mol1.get_atomsize()) && 
-        (atom2 <= mol2.get_atomsize()))
-    {    
-      berthaingen::atom a1 = mol1.get_atom(atom1 - 1);
-      berthaingen::atom a2 = mol2.get_atom(atom2 - 1);
-
-      // Maybe a 3D point clss ... is needed 
-      double len = pow((a1.get_x() - a2.get_x()), 2.0) + 
-         pow((a1.get_y() - a2.get_y()), 2.0) +
-         pow((a1.get_z() - a2.get_z()), 2.0);
-      len = sqrt(len);
-
-      double xvers = (a1.get_x() - a2.get_x())/len;
-      double yvers = (a1.get_y() - a2.get_y())/len;
-      double zvers = (a1.get_z() - a2.get_z())/len;
-
-      mol1.center (a1.get_x(), a1.get_y(), a1.get_z());
-      mol2.center (a2.get_x(), a2.get_y(), a2.get_z());
-
-      mol2.center (xvers*dist, yvers*dist, zvers*dist);
-
-      berthaingen::molecule mol = mol1;
-
-      mol.add_fragment(mol2);
-
+    
+    if (berthaingen::set_mol12_at_dist (mol1, mol2, atom1, atom2, 
+            dist, mol))
+    {
       mol.get_xyzfile(std::cout);
     }
     else

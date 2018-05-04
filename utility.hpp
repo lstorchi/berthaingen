@@ -36,5 +36,9 @@ namespace berthaingen
       std::map<ptable::element, std::vector<std::string> > &,
       std::map<ptable::element, std::vector<std::string> > &,
       std::stringstream &, const std::string & prefix = "");
+  
+  bool set_mol12_at_dist (berthaingen::molecule &, 
+    berthaingen::molecule &, int, int, 
+    double, berthaingen::molecule &);
 }
 #endif

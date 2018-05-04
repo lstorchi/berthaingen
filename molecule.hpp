@@ -221,7 +221,7 @@ namespace berthaingen
 
        void center (double, double, double);
 
-       const atom & get_atom (int idx)
+       const atom & get_atom (int idx) const
        {
          return atoms_[idx];
        };
