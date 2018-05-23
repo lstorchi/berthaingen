@@ -226,6 +226,26 @@ namespace berthaingen
          return atoms_[idx];
        };
 
+       std::vector<atom>::const_iterator get_atoms_begin () const
+       {
+         return atoms_.begin();
+       };
+
+       std::vector<atom>::const_iterator get_atoms_end () const
+       {
+         return atoms_.end();
+       };
+
+       std::vector<bond>::const_iterator get_bonds_begin () const
+       {
+         return bonds_.begin();
+       };
+
+       std::vector<bond>::const_iterator get_bonds_end () const
+       {
+         return bonds_.end();
+       };
+
        const std::string & get_molname () const
        {
          return name_;

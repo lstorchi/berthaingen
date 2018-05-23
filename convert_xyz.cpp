@@ -9,6 +9,9 @@
 #include "molecule.hpp"
 #include "utility.hpp"
 
+#define AUTOAN 0.529177
+#define ANTOAU 1.0/AUTOAN
+
 void usages (char * name) 
 {
   std::cerr << "usage: " << name << " [options] xyz" << std::endl;
@@ -67,10 +70,50 @@ int main (int argc, char ** argv)
 
   berthaingen::molecule mol;
 
-  if (mol.read_xyz_file(filename.c_str()))
+  if (mol.read_xyz_file(filename.c_str(), false))
   {
-    // TODO
+    if (convertantoau)
+    {
+      std::cout << mol.get_atomsize() <<  std::endl;
+      std::cout << mol.get_molname() <<  std::endl;
 
+      std::vector<berthaingen::atom>::const_iterator ai =
+       mol.get_atoms_begin(); 
+      for (; ai != mol.get_atoms_end(); ++ai)
+      {
+        double x = ai->get_x() * ANTOAU;
+        double y = ai->get_y() * ANTOAU;
+        double z = ai->get_z() * ANTOAU;
+
+        std::cout << ai->get_symbol() << " " 
+          << x << " " 
+          << y << " " 
+          << z << " " 
+          << ai->get_charge() << std::endl;
+      }
+ 
+    }
+    else if (convertautoan)
+    {
+      std::cout << mol.get_atomsize() <<  std::endl;
+      std::cout << mol.get_molname() <<  std::endl;
+
+      std::vector<berthaingen::atom>::const_iterator ai =
+       mol.get_atoms_begin(); 
+      for (; ai != mol.get_atoms_end(); ++ai)
+      {
+        double x = ai->get_x() * AUTOAN;
+        double y = ai->get_y() * AUTOAN;
+        double z = ai->get_z() * AUTOAN;
+
+        std::cout << ai->get_symbol() << " " 
+          << x << " " 
+          << y << " " 
+          << z << " " 
+          << ai->get_charge() << std::endl;
+      }
+ 
+    }
   }
   else
   {
