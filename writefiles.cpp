@@ -83,7 +83,7 @@ bool berthaingen::writefiles (const berthaingen::molecule & mol,
     fout << "\'ENTER NCORE, MACTVE,NACTVE\'" << std::endl;
     fout << totelectron << ",0,0" << std::endl;                                                
     fout << "\'ENTER GRID QUALITY FROM 1 (COURSE) to 5 (FINE)\'" << std::endl;
-    fout << "3" << std::endl;
+    fout << "5" << std::endl;
     fout << "\'EX-POTENTIAL available: LDA, B88P86,HCTH93\'" << std::endl;
     fout << "BLYP" << std::endl;
     fout << "\'Fitt\' USEFITT" << std::endl;
