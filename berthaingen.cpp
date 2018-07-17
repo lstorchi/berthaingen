@@ -24,7 +24,7 @@ void usages (char * name)
   std::cerr << "                              : specify bertha fitting input filename (default: fitt2.inp" << std::endl;  
   std::cerr << " -c, --convert-antoau         : convert angstrom coordinate to a.u." << std::endl;
   std::cerr << " -r, --restart-on             : set restart mode on" << std::endl;
-  std::cerr << " -t, --usefitt-off            : set usefitt mode off " << std::endl;
+  std::cerr << " -t, --rjmat-on               : set rjmat mode on " << std::endl;
  
   exit (1);
 }
@@ -39,7 +39,7 @@ int main (int argc, char ** argv)
   berthaopt.bertha_in = "./input.inp";
   berthaopt.fitt_in = "./fitt2.inp";
   berthaopt.restarton = 1;
-  berthaopt.usefitt = 1;
+  berthaopt.usefitt = 0;
 
   while (1) 
   {
@@ -54,7 +54,7 @@ int main (int argc, char ** argv)
       {"out-fittfname", 1, NULL, 'O'},
       {"convert-antoau", 0, NULL, 'c'},
       {"restart-on", 0, NULL, 'r'},
-      {"usefitt-off", 0, NULL, 't'},
+      {"rjmat-off", 0, NULL, 't'},
       {0, 0, 0, 0}
     };
 
@@ -68,7 +68,7 @@ int main (int argc, char ** argv)
         usages (argv[0]);
         break;
       case 't':
-        berthaopt.usefitt = 0;
+        berthaopt.usefitt = 1;
         break;
       case 'r':
         berthaopt.restarton = 0;
