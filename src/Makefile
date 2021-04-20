@@ -49,22 +49,27 @@ all: $(PROG_NAME1) $(PROG_NAME2) $(PROG_NAME3) $(PROG_NAME4) $(PROG_NAME5)
 
 $(PROG_NAME1): $(OBJ1)
 	$(CXX) -o $(@) $(OBJ1) $(LIB) 
+	mv $(@) ../bin
 
 $(PROG_NAME2): $(OBJ2)
 	$(CXX) -o $(@) $(OBJ2) $(LIB) 
+	mv $(@) ../bin
 
 $(PROG_NAME3): $(OBJ3)
 	$(CXX) -o $(@) $(OBJ3) $(LIB) 
+	mv $(@) ../bin
 
 $(PROG_NAME4): $(OBJ4)
 	$(CXX) -o $(@) $(OBJ4) $(LIB) 
+	mv $(@) ../bin
 
 $(PROG_NAME5): $(OBJ5)
 	$(CXX) -o $(@) $(OBJ5) $(LIB) 
+	mv $(@) ../bin
 
 clean:
-	rm -rf $(OBJ1) $(PROG_NAME1) $(OBJ2) $(PROG_NAME2) $(OBJ3) $(PROG_NAME3) $(OBJ4) $(PROG_NAME4) \
-	  $(OBJ5) $(PROG_NAME5)
+	rm -rf $(OBJ1) ../bin/$(PROG_NAME1) $(OBJ2) ../bin/$(PROG_NAME2) $(OBJ3) ../bin/$(PROG_NAME3) \
+	  $(OBJ4) ../bin/$(PROG_NAME4) $(OBJ5) ../bin/$(PROG_NAME5)
 
 convert_xyz.o: molecule.hpp utility.hpp ptable.hpp
 mergeatdist_dbl.o: molecule.hpp utility.hpp ptable.hpp
